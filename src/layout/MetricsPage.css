@@ -1,0 +1,65 @@
+.metrics-page {
+  padding: 20px;
+}
+
+
+.metrics-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: start; /* Center align the cards */
+}
+
+.metric-card {
+  background: #1b1b1b07;
+  border: 1px solid #e4d6d6b9;
+  border-radius: 10px;
+  width: 300px;
+  text-align: center;
+  transition: box-shadow 0.3s ease, background-color 0.3s ease;
+  padding: 20px;
+}
+
+.metric-card:hover {
+  transition: 0.4s;
+  background-color: white;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.15);
+}
+
+.metric-card h2 {
+  color: rgb(0, 140, 255);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  font-size: 1.2em;
+  margin-bottom: 10px;
+}
+
+.metric-card b {
+  font-size: 1.5em;
+}
+
+@media (max-width: 768px) {
+  .metric-card {
+    width: 100%; /* Take full width on smaller screens */
+  }
+}
+
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 30vh;
+}
+
+.loader {
+  border: 16px solid #f3f3f3;
+  border-top: 16px solid #007bff;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  animation: spin 3s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

@@ -1,0 +1,70 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+
+.error {
+    color: crimson !important;
+}
+
+body {
+    font-family: "Poppins", sans-serif !important;
+ 
+}
+ 
+.nav-link {
+    font-weight: 600 !important;
+}
+
+.leaflet-container {
+    border-radius: 10px;
+}
+
+p {
+    font-weight: 600 !important;
+}
+span {
+    font-weight: 600 !important;
+}
+
+th {
+    font-weight: 600 !important;
+    font-size: 15px !important;
+}
+
+.css-191x41n-MuiButtonBase-root-MuiTab-root.Mui-selected {
+    color: #00a82d;
+}
+
+.css-byy7me-MuiTabs-indicator {
+    background-color: #00a82d;
+}
+
+.css-191x41n-MuiButtonBase-root-MuiTab-root:hover {
+    color: #00a82d;
+}
+ 
+
+:where(.css-dev-only-do-not-override-ekikri).ant-descriptions .ant-descriptions-item-label {
+    font-size: 16px;
+    font-weight: 600 !important;
+    color: rgb(0 0 0 / 59%);
+}
+
+.css-15oc9na-MuiButtonBase-root-MuiTab-root.Mui-selected {
+    color: #00a82d;
+}
+
+:where(.css-dev-only-do-not-override-ekikri).ant-btn-primary:disabled, :where(.css-dev-only-do-not-override-ekikri).ant-btn-primary.ant-btn-disabled {
+    color: rgb(255 255 255 / 61%);
+}
+
+.base-Popper-root  {
+    z-index: 99999999999;
+}
+.icon_round {
+    font-family: 'Courier New', Courier, monospace !important;
+    font-size: 15px !important;
+    font-weight: bold !important;
+}
+:where(.css-dev-only-do-not-override-ekikri).ant-image {
+    width: 100% !important;
+}
