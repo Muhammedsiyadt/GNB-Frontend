@@ -8,10 +8,7 @@ export default defineConfig({
     react(),
     jsconfigPaths(),
   ],
-  base: '/', // This ensures all assets are served from /demo/localseo/
-  define: {
-    global: 'window'
-  },
+  base: '/demo/localseo/', // Adjusted to match the deployment path
   resolve: {
     alias: [
       {
@@ -25,11 +22,11 @@ export default defineConfig({
     ]
   },
   server: {
-    open: true,
+    open: false, // Optional: set to false if you prefer not to open the browser automatically
     port: 3000
   },
   preview: {
-    open: true,
+    open: false, // Optional: set to false if you prefer not to open the preview automatically
     port: 3000
   },
   build: {
