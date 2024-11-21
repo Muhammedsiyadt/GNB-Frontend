@@ -172,9 +172,9 @@ const EditPostModal = ({ isOpen, onClose, post, onSuccess }) => {
                   <Field name="publicationDate"> 
                     {({ field }) => (
                       <DatePicker
-                        format="YYYY-MM-DD" // Only display date 
+                        format="YYYY-MM-DD" // Only display date
                         size="large"
-                        className="w-100"  
+                        className="w-100"
                         value={values.publicationDate}
                         onChange={(date) => setFieldValue("publicationDate", date)}
                         disabledDate={(current) => current && current < dayjs().startOf('day')}
