@@ -7,7 +7,7 @@ import ThemeCustomization from 'themes';
 import ScrollTop from 'components/ScrollTop';
 import { Provider } from 'react-redux';
 import { store } from 'app/store';
-import { ToastContainer } from 'react-toastify';
+import { ToastContainer } from 'react-toastify'; 
 import 'react-toastify/dist/ReactToastify.css';
 import '/style.css'
 import '/theme.css'
