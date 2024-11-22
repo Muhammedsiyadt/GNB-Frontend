@@ -25,11 +25,11 @@ export default defineConfig({
     ]
   },
   server: {
-    open: true,
+    open: false, // Disable auto-opening the browser
     port: 3000
   },
   preview: {
-    open: true,
+    open: false, // Disable auto-opening for preview as well
     port: 3000
   },
   build: {

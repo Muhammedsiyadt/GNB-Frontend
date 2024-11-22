@@ -104,17 +104,21 @@ export default function Profile() {
         anchorEl={anchorRef.current}
         role={undefined}
         transition
-        disablePortal
-        popperOptions={{
-          modifiers: [
-            {
-              name: 'offset',
-              options: {
-                offset: [0, 9]
-              }
-            }
-          ]
-        }}
+        disablePortal={false}
+        modifiers={[
+          {
+            name: 'zIndex',
+            options: {
+              zIndex: 9999 
+            },
+          },
+          {
+            name: 'offset',
+            options: {
+              offset: [0, 9],
+            },
+          },
+        ]}
       >
         {({ TransitionProps }) => (
           <Transitions type="grow" position="top-right" in={open} {...TransitionProps}>
