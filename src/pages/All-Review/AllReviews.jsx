@@ -2,11 +2,17 @@ import React, { useState, useEffect } from 'react';
 import Navbar from 'components/Navbar';
 import TopHeader from 'components/TopHeader';
 import ClipLoader from 'react-spinners/ClipLoader';
-import { AxiosInstance } from '../utils/AxiosInstance';
+import { AxiosInstance } from '../../utils/AxiosInstance';
 import { Button, Modal, Spinner, Toast } from 'react-bootstrap';
 import { FaUser, FaStar, FaCommentDots } from 'react-icons/fa';
 import './AllReviews.css';
 import { GoogleGenerativeAI } from '@google/generative-ai';
+import { color } from 'framer-motion';
+import { Spin } from 'antd';
+import { FileSearchOutlined, SearchOutlined, SyncOutlined } from '@ant-design/icons';
+
+
+
 
 const AllReviews = () => {
     const [reviews, setReviews] = useState([]);
@@ -18,8 +24,10 @@ const AllReviews = () => {
     const [selectedReview, setSelectedReview] = useState(null);
     const [replyLoading, setReplyLoading] = useState(false); // Loading state for submit reply
     const [showToast, setShowToast] = useState(false); // Toast visibility state
-
+    const [locationArray, setLocationArray] = useState({})
+    const uniqueLocations = Object.values(locationArray);
     // Fetch all reviews initially
+
     useEffect(() => {
         const fetchReviews = async () => {
             try {
@@ -31,6 +39,7 @@ const AllReviews = () => {
                     throw new Error('Missing Token, GMB Access Token, or Account ID');
                 }
 
+                // Step 1: Get all reviews
                 const response = await AxiosInstance.get(`/gmb/get-allviewers/${accountId}`, {
                     headers: {
                         Authorization: `Bearer ${token}`,
@@ -40,6 +49,49 @@ const AllReviews = () => {
 
                 const allReviews = response.data.reviews || [];
                 const filteredReviews = allReviews.filter(review => !review.reviewReply);
+
+                // Step 2: Fetch location data for each review
+                const locationDataArray = await Promise.all(
+                    filteredReviews.map(async (review) => {
+                        const locationMatch = review.name.match(/locations\/(\d+)/);
+                        const locationId = locationMatch ? locationMatch[1] : null;
+
+                        if (!locationId) {
+                            console.warn('LocationId not found in review:', review);
+                            return {
+                                ...review,
+                                locationData: null,
+                                locationError: 'Location ID not found in review name'
+                            };
+                        }
+
+                        try {
+                            const responseLocation = await AxiosInstance.get(`/gmb/get-locationData/${locationId}`, {
+                                headers: {
+                                    Authorization: `Bearer ${token}`,
+                                    'gmb_access_token': gmbAccessToken,
+                                },
+                            });
+
+                            const locationData = responseLocation.data;
+
+                            setLocationArray(prevState => ({
+                                ...prevState,
+                                [locationId]: locationData
+                            }));
+
+                            return {
+                                ...review,
+                                locationData
+                            };
+
+                        } catch (error) {
+                            console.error(`Error fetching location data for locationId: ${locationId}`);
+                        }
+                    })
+                );
+
+                filteredReviews.sort((a, b) => new Date(b.createTime) - new Date(a.createTime));
                 setReviews(filteredReviews);
             } catch (error) {
                 setError(error);
@@ -50,6 +102,7 @@ const AllReviews = () => {
 
         fetchReviews();
     }, []);
+
 
     const mapStarRating = (starRating) => {
         switch (starRating) {
@@ -103,33 +156,33 @@ const AllReviews = () => {
 
     const showModal = (comment, reviewer, rating, reviewId, name) => {
         setIsModalOpen(true);
-        setSelectedReview({ comment, reviewer, rating, id: reviewId, name }); 
+        setSelectedReview({ comment, reviewer, rating, id: reviewId, name });
         getAIGeneratedReply(comment, reviewer, rating);
     };
-    
+
     const submitReply = async () => {
         try {
-            setReplyLoading(true); 
+            setReplyLoading(true);
             const token = localStorage.getItem('token');
             const gmbAccessToken = localStorage.getItem('gmb_access_token');
-            const name = selectedReview.name; 
-            const locationId = name.split('/')[3]; 
-            const accountId = name.split('/')[1]; 
-    
+            const name = selectedReview.name;
+            const locationId = name.split('/')[3];
+            const accountId = name.split('/')[1];
+
             if (!token || !gmbAccessToken || !accountId || !locationId || !selectedReview.id) {
                 throw new Error('Missing required tokens, IDs, or Review ID');
             }
-    
+
             await AxiosInstance.post(`/gmb/replay-review/${accountId}/${locationId}/${selectedReview.id}`,
                 { reply: reply },
                 {
                     headers: {
-                        Authorization: `Bearer ${token}`, 
+                        Authorization: `Bearer ${token}`,
                         'gmb_access_token': gmbAccessToken,
                     },
                 }
-            );  
-    
+            );
+
             setIsModalOpen(false);
             setShowToast(true); // Show toast notification
         } catch (error) {
@@ -138,7 +191,7 @@ const AllReviews = () => {
             setReplyLoading(false); // End loading
         }
     };
-    
+
     const handleCancel = () => {
         setIsModalOpen(false);
         setReply('');
@@ -146,8 +199,9 @@ const AllReviews = () => {
 
     if (loading) {
         return (
-            <div className="loading-container">
-                <ClipLoader color="#007bff" loading={loading} size={50} />
+            <div className="d-flex flex-column align-items-center justify-content-center p-5">
+                <Spin>
+                </Spin>
             </div>
         );
     }
@@ -157,45 +211,68 @@ const AllReviews = () => {
     }
 
     return (
+
         <div>
-            <TopHeader />
-            <Navbar />
-            <div className="container mt-5">
-                <h1 className="text-start text-uppercase">Customer Reviews Without Replies</h1>
+            <div className="container mt-5 " style={{ marginBottom: '100px' }}>
+                {/* <h1 className="text-start text-uppercase">Customer Reviews Without Replies</h1> */}
+
+
                 {reviews.length === 0 ? (
-                    <p className="text-center">No reviews found</p>
+                    <div className="text-center">
+                        <Spin
+                            tip="No reviews found"
+                            size="large"
+                            style={{ fontSize: '20px', color: '#1890ff' }}
+                        />
+                    </div>
                 ) : (
-                    <div className="review-list">
-                        {reviews.map((review, index) => (
-                            <div key={index} className="review-item">
-                                <div className="review-header">
-                                    <FaUser className="icon" />
-                                    <span className="reviewer-name me-3">{review.reviewer?.displayName || 'Anonymous'}</span>
-                                    <span className="review-date text-primary">
-                                        {new Date(review.createTime).toLocaleDateString()} &nbsp; &nbsp;
-                                        <span className="text-primary">{new Date(review.createTime).toLocaleTimeString()}</span>
-                                    </span>
-                                </div>
+                    <div className="review-list ">
+                        {reviews.map((review, index) => {
 
-                                <div className="review-comment">
-                                    <FaCommentDots className="icon text-warning" />
-                                    <span className="cmt">{review.comment || 'No comment provided'}</span>
-                                </div>
 
-                                <div className="review-rating">
-                                    {Array(mapStarRating(review.starRating)).fill().map((_, i) => (
-                                        <FaStar key={i} className="star-icon" />
-                                    ))}
-                                </div>
+                            const locationId = review.name.match(/locations\/(\d+)/)?.[1];
+                            const location = locationId && locationArray[locationId] ? locationArray[locationId].data.name : null;
 
-                                <Button
-                                    className="bg-success w-7 h-1"
-                                    onClick={() => showModal(review.comment, review.reviewer?.displayName, mapStarRating(review.starRating), review.reviewId, review.name)}
-                                >
-                                    Reply
-                                </Button>
-                            </div>
-                        ))}
+                            return (
+                                <div key={index} className="review-item">
+                                    <div className="review-location">
+                                        {location ? (
+                                            <h3><b style={{ color: 'blue' }}>{location}</b></h3>
+                                        ) : (
+                                            <h3> Unknown</h3>
+                                        )}
+                                    </div>
+                                    <div className="review-header">
+                                        <FaUser className="icon" />
+                                        <span className="reviewer-name me-3 text-primary">{review.reviewer?.displayName || 'Anonymous'}</span>
+                                        <span className="review-date text-secondary">
+                                            <small>{new Date(review.createTime).toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' }).replace(/\//g, '-')}</small>
+                                            &nbsp; &nbsp;
+                                            <span className="text-secondary"><small>{new Date(review.createTime).toLocaleTimeString()}</small></span>
+                                        </span>
+                                    </div>
+
+
+                                    <div className="review-comment">
+                                        <FaCommentDots className="icon text-warning" />
+                                        <span className="cmt">{review.comment || <small >'No comment provided'</small>}</span>
+                                    </div>
+
+                                    <div className="review-rating">
+                                        {Array(mapStarRating(review.starRating)).fill().map((_, i) => (
+                                            <FaStar key={i} className="star-icon" />
+                                        ))}
+                                    </div>
+
+                                    <Button
+                                        className="bg-success w-10 h-5"
+                                        onClick={() => showModal(review.comment, review.reviewer?.displayName, mapStarRating(review.starRating), review.reviewId, review.name)}
+                                    >
+                                        Reply
+                                    </Button>
+                                </div>
+                            );
+                        })}
                     </div>
                 )}
 
@@ -231,18 +308,18 @@ const AllReviews = () => {
                     </Modal.Footer>
                 </Modal>
 
-                
-                <Toast 
-                    onClose={() => setShowToast(false)} 
-                    show={showToast} 
-                    delay={3000} 
-                    autohide 
+                <Toast
+                    onClose={() => setShowToast(false)}
+                    show={showToast}
+                    delay={3000}
+                    autohide
                     className="position-fixed bg-success text-white bottom-0 end-0 m-4"
                 >
                     <Toast.Body>Reply submitted successfully!</Toast.Body>
                 </Toast>
             </div>
         </div>
+
     );
 };
 

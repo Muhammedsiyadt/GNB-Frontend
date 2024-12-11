@@ -4,12 +4,12 @@ import { toast } from 'react-toastify';
 import { AxiosInstance } from 'utils/AxiosInstance';
 
 // Async thunk to post a request to create a post in GMB
-export const createGMBPost = createAsyncThunk(
+export const createBulkPostManual = createAsyncThunk(
     'posts/createGMBPost',
     async (postData, thunkAPI) => {
         try {
             const token = localStorage.getItem('token'); // Get token from localStorage
-            const response = await AxiosInstance.post('gmb/schedulepost2', postData, {
+            const response = await AxiosInstance.post('gmb/bulkPost-manual', postData, {
                 headers: {
                     Authorization: `${token}`,
                     'Content-Type': 'multipart/form-data'
@@ -22,7 +22,7 @@ export const createGMBPost = createAsyncThunk(
     }
 );
 
-const postsSlice = createSlice({ 
+const postsSlice = createSlice({
     name: 'posts',
     initialState: {
         loading: false,
@@ -35,19 +35,19 @@ const postsSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder
-            .addCase(createGMBPost.pending, (state) => {
+            .addCase(createBulkPostManual.pending, (state) => {
                 state.loading = true;
                 state.error = null;
                 state.successMessage = null;
             })
-            .addCase(createGMBPost.fulfilled, (state, action) => {
+            .addCase(createBulkPostManual.fulfilled, (state, action) => {
                 state.loading = false;
                 state.successMessage = action.payload.message; // Assuming your API returns a success message
                 state.hasError = false;
                 state.error = null;
                 window.location.reload();
             })
-            .addCase(createGMBPost.rejected, (state, action) => {
+            .addCase(createBulkPostManual.rejected, (state, action) => {
                 state.loading = false;
                 state.hasError = true;
                 state.error = action.payload.errorMessage; // Assuming your API returns an error message

@@ -1,13 +1,14 @@
 import { Comment } from '@ant-design/compatible'
 import { GoogleGenerativeAI } from '@google/generative-ai'
 import { Button, Card, Divider, Empty, Flex, List, Modal, Rate, Spin, Typography } from 'antd'
+import { CheckOutlined, FileSearchOutlined } from '@ant-design/icons';
 import axios from 'axios'
 import moment from 'moment'
 import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useParams } from 'react-router'
 
-function Reviews({setActiveTab, setCount, count}) {
+function Reviews({ setActiveTab, setCount, count }) {
 
     const { loading, error, data } = useSelector((state) => state.getLocation)
     let { id } = useParams();
@@ -64,7 +65,7 @@ function Reviews({setActiveTab, setCount, count}) {
             for (let i = 0; i < 2; i++) {
                 const result = await model.generateContent(prompt);
                 const response = await result.response;
-                const text = await response.text();  
+                const text = await response.text();
 
                 if (text) {
                     replies.push(text.replace(/,/g, ''));
@@ -108,18 +109,18 @@ function Reviews({setActiveTab, setCount, count}) {
                 }
             });
 
-            if(res.status == 200){
+            if (res.status == 200) {
                 setError1(null);
                 setLoading2(false);
                 setIsModalOpen(false);
                 setActiveTab("reviews")
-                setCount(count+1)
+                setCount(count + 1)
             }
 
-          
+
 
         } catch (error) {
- 
+
             setError1(error.message);
         } finally {
             setLoading1(false);
@@ -138,45 +139,119 @@ function Reviews({setActiveTab, setCount, count}) {
 
 
             <Modal title="AI Replay" width={1000} open={isModalOpen} okText="Replay" onOk={handleOk} onCancel={handleCancel}>
-
-                {loading2 ? <Spin tip="Replaying....."><>
-                    {loading1 ? "Loading....." : <>
-                        {replay && replay.map && replay.map((item, key) => {
-                            return (
-                                <div key={key}>
-                                    <div className="row gap-4 align-items-center mt-4">
-                                        <div className='col-md-1'>
-                                            <Button onClick={(e) => handleCheckboxChange(item)} type="primary" className='fw-bold'>Use this</Button>
-                                        </div>
-                                        <div className='col-md-8'>
+                {loading2 ? (
+                    <Spin tip="Replaying.....">
+                        {Array.isArray(replay) && replay.length > 0 ? (
+                            replay.map((item, key) => (
+                                <div
+                                    key={key}
+                                    className={`
+                            border rounded-lg 
+                            mb-3 
+                            p-3 
+                            d-flex 
+                            align-items-center 
+                            justify-content-between 
+                            ${selectedText === item ? 'bg-light border-primary' : 'bg-white'}
+                        `}
+                                >
+                                    <div className="d-flex align-items-center">
+                                        <Button
+                                            onClick={() => handleCheckboxChange(item)}
+                                            type={selectedText === item ? 'primary' : 'default'}
+                                            className='me-3'
+                                        >
+                                            {selectedText === item ? 'Selected' : 'Use this'}
+                                        </Button>
+                                        <div
+                                            className="text-wrap"
+                                            style={{
+                                                maxWidth: '700px',
+                                                wordBreak: 'break-word'
+                                            }}
+                                        >
                                             {item}
                                         </div>
                                     </div>
-                                    <Divider />
+                                    {selectedText === item && (
+                                        <CheckOutlined className="text-primary ms-2" />
+                                    )}
                                 </div>
-                            )
-                        })}
-                    </>}
-                </></Spin> : <>
-                    {loading1 ? <div className='d-flex align-items-center justify-content-center mt-5 mb-5'><Spin tip="Loading...."></Spin></div> : <>
-                        {replay && replay.map && replay.map((item, key) => {
-                            return (
-                                <div key={key}>
-                                    <div className="row gap-4 align-items-center mt-4">
-                                        <div className='col-md-1'>
-                                            <Button onClick={(e) => handleCheckboxChange(item)} type="primary" className='fw-bold'>Use this</Button>
-                                        </div>
-                                        <div className='col-md-8'>
-                                            {item}
-                                        </div>
+                            ))
+                        ) : (
+                            <div className="text-center">No replay data available</div>
+                        )}
+                    </Spin>
+                ) : (
+                    Array.isArray(replay) && replay.length > 0 ? (
+                        replay.map((item, key) => (
+                            <div
+                                key={key}
+                                className={`
+                        border rounded-lg 
+                        mb-3 
+                        p-3 
+                        d-flex 
+                        align-items-center 
+                        justify-content-between 
+                        ${selectedText === item ? 'bg-light border-primary' : 'bg-white'}
+                    `}
+                            >
+                                <div className="d-flex align-items-center">
+                                    <Button
+                                        onClick={() => handleCheckboxChange(item)}
+                                        type={selectedText === item ? 'primary' : 'default'}
+                                        className='me-3'
+                                    >
+                                        {selectedText === item ? 'Selected' : 'Use this'}
+                                    </Button>
+                                    <div
+                                        className="text-wrap"
+                                        style={{
+                                            maxWidth: '700px',
+                                            wordBreak: 'break-word'
+                                        }}
+                                    >
+                                        {item}
                                     </div>
-                                    <Divider />
                                 </div>
-                            )
-                        })}
-                    </>}
-                </>}
-
+                                {selectedText === item && (
+                                    <CheckOutlined className="text-primary ms-2" />
+                                )}
+                            </div>
+                        ))
+                    ) : (
+                        <div className="d-flex flex-column align-items-center justify-content-center p-5">
+                            <Spin
+                                size="large"
+                                tip={
+                                    <div className="mt-3 text-muted">
+                                        {/* No replay data available */}
+                                    </div>
+                                }
+                            >
+                                <div
+                                    style={{
+                                        width: 100,
+                                        height: 100,
+                                        backgroundColor: '#f0f0f0',
+                                        borderRadius: '50%',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center'
+                                    }}
+                                >
+                                    <FileSearchOutlined
+                                        style={{
+                                            fontSize: '48px',
+                                            color: '#1890ff'
+                                        }}
+                                    />
+                                </div>
+                            </Spin>
+                        </div>
+                    )
+                )}
             </Modal>
 
 

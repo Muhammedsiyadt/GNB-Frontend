@@ -53,32 +53,32 @@ function Navbar({ isOpen }) {
                     </Link>
                   </li>
 
-                  <li className="nav-item">
-                    <a className="nav-link" href="#">
-                      <span className="nav-link-icon d-md-none d-lg-inline-block">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="icon"
-                          width="24"
-                          height="24"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          stroke-width="2"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          class="icon icon-tabler icons-tabler-outline icon-tabler-file-percent"
-                        >
-                          <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                          <path d="M10 17l4 -4" />
-                          <path d="M14 3v4a1 1 0 0 0 1 1h4" />
-                          <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z" />
-                          <path d="M10 13h.01" />
-                          <path d="M14 17h.01" />
-                        </svg>
-                      </span>
-                      <span className="nav-link-title">Bulk Posting</span>
-                    </a>
+                  <li className={`nav-item ${location.pathname == '/location/bulk-posting' ? 'active' : ''}`}>
+                    <Link className="nav-link" to="/location/bulk-posting">
+                        <span className="nav-link-icon d-md-none d-lg-inline-block">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="icon"
+                            width="24"
+                            height="24"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            class="icon icon-tabler icons-tabler-outline icon-tabler-file-percent"
+                          >
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                            <path d="M10 17l4 -4" />
+                            <path d="M14 3v4a1 1 0 0 0 1 1h4" />
+                            <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z" />
+                            <path d="M10 13h.01" />
+                            <path d="M14 17h.01" />
+                          </svg>
+                        </span>
+                        <span className="nav-link-title">Bulk Posting</span>
+                    </Link>
                   </li>
 
                   <li className="nav-item">
@@ -182,17 +182,17 @@ function Navbar({ isOpen }) {
                       <span className="nav-link-title">Support</span>
                     </a>
                   </li>
-                  <li className={`nav-item ${location.pathname == '/reviews' ? 'active' : ''}`}>
-                    <a className="nav-link" href="/reviews">
+                  <li className={`nav-item ${location.pathname == '/all-reviews' ? 'active' : ''}`}>
+                  <Link className="nav-link" to="/all-reviews">
                       <span className="nav-link-icon d-md-none d-lg-inline-block">
                         <FontAwesomeIcon icon={faStar} className="icon" size="lg" />
                       </span>
                       <span className="nav-link-title">Reviews</span>
-                    </a>
+                      </Link>
                   </li>
                 </ul>
               </div>
-              <div className="col-2 d-none d-xxl-block">
+              {/* <div className="col-2 d-none d-xxl-block">
                 <div className="my-2 my-md-0 flex-grow-1 flex-md-grow-0 order-first order-md-last">
                   <Input
                     type="text"
@@ -203,7 +203,7 @@ function Navbar({ isOpen }) {
                     aria-label="Search in website"
                   />
                 </div>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>

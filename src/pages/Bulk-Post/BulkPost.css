@@ -1,0 +1,42 @@
+
+
+.post-carousel {
+    display: flex;
+    gap: 20px;
+    overflow-x: auto;
+    padding: 20px 0;
+}
+
+.post-card {
+    min-width: 350px;
+    max-width: 350px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    flex-shrink: 0; 
+}
+
+.add-post-card {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #007bff;
+    flex-shrink: 0;
+}
+
+.add-post-card button {
+    border: none;
+    background-color: transparent;
+    color: #007bff;
+    font-size: 18px;
+}
+
+.add-post-card button:hover {
+    color: #0056b3;
+}
+
+.post-card button {
+    width: 100%;
+}

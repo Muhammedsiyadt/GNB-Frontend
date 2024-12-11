@@ -11,9 +11,9 @@
 }
 
 .metric-card {
-  background: #1b1b1b07;
-  border: 1px solid #e4d6d6b9;
-  border-radius: 10px;
+  background: #ffffff;
+  border: 1px solid #00000011;
+  border-radius: 1px;
   width: 300px;
   text-align: center;
   transition: box-shadow 0.3s ease, background-color 0.3s ease;
@@ -22,7 +22,7 @@
 
 .metric-card:hover {
   transition: 0.4s;
-  background-color: white;
+  background-color: rgb(255, 255, 255);
   box-shadow: 0 0 6px rgba(0, 0, 0, 0.15);
 }
 

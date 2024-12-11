@@ -8,7 +8,7 @@ export default defineConfig({
     react(),
     jsconfigPaths(),
   ],
-  base: '/demo/localseo/', // This ensures all assets are served from /demo/localseo/
+  base: '/', // This ensures all assets are served from /demo/localseo/
   define: {
     global: 'window'
   },
@@ -25,11 +25,11 @@ export default defineConfig({
     ]
   },
   server: {
-    open: true,
+    open: false,
     port: 3000
   },
   preview: {
-    open: true,
+    open: false,
     port: 3000
   },
   build: {

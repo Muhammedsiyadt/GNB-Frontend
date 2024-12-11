@@ -18,6 +18,7 @@ const MetricsPage = () => {
 
   const { id } = useParams();
 
+
   useEffect(() => {
     const fetchUsers = async () => {
       try {
@@ -34,7 +35,10 @@ const MetricsPage = () => {
             'GMB-Access-Token': gmbAccessToken,
           },
         });
+
+
         setUsers(response.data);
+        const webData = response.data.multiDailyMetricTimeSeries[0].dailyMetricTimeSeries[0].timeSeries.datedValues.length
 
         const metrics = response.data.multiDailyMetricTimeSeries[0]?.dailyMetricTimeSeries || [];
         metrics.forEach((metric) => {
@@ -54,6 +58,10 @@ const MetricsPage = () => {
     fetchUsers();
   }, [id]);
 
+  // console.log('Users :- ', users)
+
+ 
+
   if (loading) {
     return (
       <div className="loading-container">
@@ -72,7 +80,6 @@ const MetricsPage = () => {
       <div className="metrics-container">
         <MetricCard title="Website Visits" value={web} icon={faGlobe} />
         <MetricCard title="Call Clicks" value={call} icon={faPhone} />
-        <MetricCard title="Message Conversations" value={message} icon={faEnvelope} />
         <MetricCard title="Direction Requests" value={direction} icon={faMapMarkerAlt} />
         <MetricCard title="Bookings" value={booking} icon={faCalendarAlt} />
       </div>

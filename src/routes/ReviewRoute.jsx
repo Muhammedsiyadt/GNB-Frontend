@@ -1,4 +1,4 @@
-import AllReviews from "pages/AllReviews";
+import AllReviews from "pages/All-Review/AllReviews";
 
 
 

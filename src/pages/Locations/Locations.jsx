@@ -1,5 +1,5 @@
 // material-ui
-import { Breadcrumbs, Grid } from '@mui/material';
+import { Breadcrumbs, Grid, Tooltip } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import { Button } from 'antd';
 import LocationsList from 'components/LocationsList';
@@ -20,9 +20,11 @@ export default function Locations() {
           </div>
           <div>
             <Link to={'/add/locations'} className=' text-white text-decoration-none'>
-              <Button type="primary" className='fw-bold' size='large'>
-                Add Location
-              </Button>
+              <Tooltip title="Add New Location">
+                <Button type="primary" className='fw-bold' size='large'>
+                  Add Location
+                </Button>
+              </Tooltip>
             </Link>
           </div>
         </div>
