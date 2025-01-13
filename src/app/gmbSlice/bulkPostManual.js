@@ -9,7 +9,8 @@ export const createBulkPostManual = createAsyncThunk(
     async (postData, thunkAPI) => {
         try {
             const token = localStorage.getItem('token'); // Get token from localStorage
-            const response = await AxiosInstance.post('gmb/bulkPost-manual', postData, {
+            console.log('token: ', token)
+            const response = await AxiosInstance.post('/gmb/create-bulk-post', postData, {
                 headers: {
                     Authorization: `${token}`,
                     'Content-Type': 'multipart/form-data'

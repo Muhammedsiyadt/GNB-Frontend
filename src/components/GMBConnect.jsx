@@ -23,8 +23,10 @@ function GMBConnect() {
     useEffect(() => {
         let gmb_access_token = localStorage.getItem('gmb_access_token');
         let gmb_client_id = localStorage.getItem('gmb_client_id');
+        let accounts = localStorage.getItem('gmb_account_name');
         setAccessToken(gmb_access_token);
         setClientId(gmb_client_id);
+        setAccountId(accounts)
     }, [])
 
 

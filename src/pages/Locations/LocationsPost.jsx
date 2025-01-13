@@ -64,7 +64,7 @@ function a11yProps(index) {
 
 export default function LocationsPost() {
     let { id } = useParams();
-    const [imageUrl, setImageUrl] = React.useState();
+    const [imageUrl, setImageUrl] = React.useState();   
 
 
     const { loading, error, data } = useSelector((state) => state.getLocation)

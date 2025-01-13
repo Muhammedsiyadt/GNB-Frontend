@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom'
 
 function TopHeader({ setIsOpen, isOpen }) {
 
-    const [menu , setMenu] = useState(false);
+    const [menu, setMenu] = useState(false);
 
     const { user } = useSelector(state => state.userProfile);
 

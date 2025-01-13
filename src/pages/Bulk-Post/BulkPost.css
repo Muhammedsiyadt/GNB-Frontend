@@ -40,3 +40,28 @@
 .post-card button {
     width: 100%;
 }
+
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+.animate-bounce {
+    animation: bounce 1s infinite;
+}
+
+.bg-primary-soft {
+    background-color: rgba(var(--bs-primary-rgb), 0.1);
+}
+
+.custom-select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+}
+.custom-select:focus {
+    border-color: #6c757d;
+    box-shadow: 0 0 0 0.2rem rgba(108,117,125,0.25);
+    outline: none;
+}

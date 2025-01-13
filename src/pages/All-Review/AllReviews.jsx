@@ -1,7 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import Navbar from 'components/Navbar';
-import TopHeader from 'components/TopHeader';
-import ClipLoader from 'react-spinners/ClipLoader';
 import { AxiosInstance } from '../../utils/AxiosInstance';
 import { Button, Modal, Spinner, Toast } from 'react-bootstrap';
 import { FaUser, FaStar, FaCommentDots } from 'react-icons/fa';
